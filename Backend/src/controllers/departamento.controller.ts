@@ -1,150 +1,125 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   Count,
   CountSchema,
   Filter,
-  FilterExcludingWhere,
   repository,
   Where,
 } from '@loopback/repository';
 import {
-  post,
-  param,
+  del,
   get,
   getModelSchemaRef,
+  getWhereSchemaFor,
+  param,
   patch,
-  put,
-  del,
+  post,
   requestBody,
-  response,
 } from '@loopback/rest';
-import {Departamento} from '../models';
+import { basicAuthorization } from '../middlewares/auth.midd';
+import {
+  Departamento,
+  Ciudad,
+} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
-export class DepartamentoController {
+export class DepartamentoCiudadController {
   constructor(
-    @repository(DepartamentoRepository)
-    public departamentoRepository : DepartamentoRepository,
-  ) {}
+    @repository(DepartamentoRepository) protected departamentoRepository: DepartamentoRepository,
+  ) { }
 
-  @post('/departamentos')
-  @response(200, {
-    description: 'Departamento model instance',
-    content: {'application/json': {schema: getModelSchemaRef(Departamento)}},
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin', 'Adviser','Client','User'],
+    voters: [basicAuthorization],
   })
-  async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Departamento, {
-            title: 'NewDepartamento',
-            exclude: ['id'],
-          }),
-        },
-      },
-    })
-    departamento: Omit<Departamento, 'id'>,
-  ): Promise<Departamento> {
-    return this.departamentoRepository.create(departamento);
-  }
 
-  @get('/departamentos/count')
-  @response(200, {
-    description: 'Departamento model count',
-    content: {'application/json': {schema: CountSchema}},
-  })
-  async count(
-    @param.where(Departamento) where?: Where<Departamento>,
-  ): Promise<Count> {
-    return this.departamentoRepository.count(where);
-  }
-
-  @get('/departamentos')
-  @response(200, {
-    description: 'Array of Departamento model instances',
-    content: {
-      'application/json': {
-        schema: {
-          type: 'array',
-          items: getModelSchemaRef(Departamento, {includeRelations: true}),
+  @get('/departamentos/{id}/ciudads', {
+    responses: {
+      '200': {
+        description: 'Array of Departamento has many Ciudad',
+        content: {
+          'application/json': {
+            schema: {type: 'array', items: getModelSchemaRef(Ciudad)},
+          },
         },
       },
     },
   })
   async find(
-    @param.filter(Departamento) filter?: Filter<Departamento>,
-  ): Promise<Departamento[]> {
-    return this.departamentoRepository.find(filter);
+    @param.path.string('id') id: string,
+    @param.query.object('filter') filter?: Filter<Ciudad>,
+  ): Promise<Ciudad[]> {
+    return this.departamentoRepository.ciudades(id).find(filter);
   }
 
-  @patch('/departamentos')
-  @response(200, {
-    description: 'Departamento PATCH success count',
-    content: {'application/json': {schema: CountSchema}},
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin'],
+    voters: [basicAuthorization],
   })
-  async updateAll(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Departamento, {partial: true}),
-        },
-      },
-    })
-    departamento: Departamento,
-    @param.where(Departamento) where?: Where<Departamento>,
-  ): Promise<Count> {
-    return this.departamentoRepository.updateAll(departamento, where);
-  }
 
-  @get('/departamentos/{id}')
-  @response(200, {
-    description: 'Departamento model instance',
-    content: {
-      'application/json': {
-        schema: getModelSchemaRef(Departamento, {includeRelations: true}),
+  @post('/departamentos/{id}/ciudads', {
+    responses: {
+      '200': {
+        description: 'Departamento model instance',
+        content: {'application/json': {schema: getModelSchemaRef(Ciudad)}},
       },
     },
   })
-  async findById(
-    @param.path.string('id') id: string,
-    @param.filter(Departamento, {exclude: 'where'}) filter?: FilterExcludingWhere<Departamento>
-  ): Promise<Departamento> {
-    return this.departamentoRepository.findById(id, filter);
+  async create(
+    @param.path.string('id') id: typeof Departamento.prototype.id,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Ciudad, {
+            title: 'NewCiudadInDepartamento',
+            exclude: ['id'],
+            optional: ['departamentoId']
+          }),
+        },
+      },
+    }) ciudad: Omit<Ciudad, 'id'>,
+  ): Promise<Ciudad> {
+    return this.departamentoRepository.ciudades(id).create(ciudad);
   }
 
-  @patch('/departamentos/{id}')
-  @response(204, {
-    description: 'Departamento PATCH success',
+  @patch('/departamentos/{id}/ciudads', {
+    responses: {
+      '200': {
+        description: 'Departamento.Ciudad PATCH success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
   })
-  async updateById(
+  async patch(
     @param.path.string('id') id: string,
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Departamento, {partial: true}),
+          schema: getModelSchemaRef(Ciudad, {partial: true}),
         },
       },
     })
-    departamento: Departamento,
-  ): Promise<void> {
-    await this.departamentoRepository.updateById(id, departamento);
+    ciudad: Partial<Ciudad>,
+    @param.query.object('where', getWhereSchemaFor(Ciudad)) where?: Where<Ciudad>,
+  ): Promise<Count> {
+    return this.departamentoRepository.ciudades(id).patch(ciudad, where);
   }
 
-  @put('/departamentos/{id}')
-  @response(204, {
-    description: 'Departamento PUT success',
+  @del('/departamentos/{id}/ciudads', {
+    responses: {
+      '200': {
+        description: 'Departamento.Ciudad DELETE success count',
+        content: {'application/json': {schema: CountSchema}},
+      },
+    },
   })
-  async replaceById(
+  async delete(
     @param.path.string('id') id: string,
-    @requestBody() departamento: Departamento,
-  ): Promise<void> {
-    await this.departamentoRepository.replaceById(id, departamento);
-  }
-
-  @del('/departamentos/{id}')
-  @response(204, {
-    description: 'Departamento DELETE success',
-  })
-  async deleteById(@param.path.string('id') id: string): Promise<void> {
-    await this.departamentoRepository.deleteById(id);
+    @param.query.object('where', getWhereSchemaFor(Ciudad)) where?: Where<Ciudad>,
+  ): Promise<Count> {
+    return this.departamentoRepository.ciudades(id).delete(where);
   }
 }

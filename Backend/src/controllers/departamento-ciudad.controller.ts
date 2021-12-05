@@ -1,3 +1,5 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   Count,
   CountSchema,
@@ -15,6 +17,7 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
+import { basicAuthorization } from '../middlewares/auth.midd';
 import {
   Departamento,
   Ciudad,
@@ -25,6 +28,12 @@ export class DepartamentoCiudadController {
   constructor(
     @repository(DepartamentoRepository) protected departamentoRepository: DepartamentoRepository,
   ) { }
+
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin', 'Adviser','Client','User'],
+    voters: [basicAuthorization],
+  })
 
   @get('/departamentos/{id}/ciudads', {
     responses: {
@@ -44,6 +53,12 @@ export class DepartamentoCiudadController {
   ): Promise<Ciudad[]> {
     return this.departamentoRepository.ciudades(id).find(filter);
   }
+
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin'],
+    voters: [basicAuthorization],
+  })
 
   @post('/departamentos/{id}/ciudads', {
     responses: {

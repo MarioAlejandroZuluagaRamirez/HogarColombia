@@ -1,3 +1,5 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   Count,
   CountSchema,
@@ -17,6 +19,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import { basicAuthorization } from '../middlewares/auth.midd';
 import {Ciudad} from '../models';
 import {CiudadRepository} from '../repositories';
 
@@ -25,6 +28,11 @@ export class CiudadController {
     @repository(CiudadRepository)
     public ciudadRepository : CiudadRepository,
   ) {}
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin'],
+    voters: [basicAuthorization],
+  })
 
   @post('/ciudades')
   @response(200, {
@@ -46,6 +54,12 @@ export class CiudadController {
   ): Promise<Ciudad> {
     return this.ciudadRepository.create(ciudad);
   }
+
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin', 'Adviser','Client','User'],
+    voters: [basicAuthorization],
+  })
 
   @get('/ciudades/count')
   @response(200, {
@@ -76,6 +90,12 @@ export class CiudadController {
     return this.ciudadRepository.find(filter);
   }
 
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin'],
+    voters: [basicAuthorization],
+  })
+
   @patch('/ciudades')
   @response(200, {
     description: 'Ciudad PATCH success count',
@@ -95,6 +115,12 @@ export class CiudadController {
     return this.ciudadRepository.updateAll(ciudad, where);
   }
 
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin', 'Adviser','Client','User'],
+    voters: [basicAuthorization],
+  })
+
   @get('/ciudades/{id}')
   @response(200, {
     description: 'Ciudad model instance',
@@ -110,6 +136,12 @@ export class CiudadController {
   ): Promise<Ciudad> {
     return this.ciudadRepository.findById(id, filter);
   }
+
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin'],
+    voters: [basicAuthorization],
+  })
 
   @patch('/ciudades/{id}')
   @response(204, {
