@@ -4,30 +4,57 @@ import {
   Count,
   CountSchema,
   Filter,
+  FilterExcludingWhere,
   repository,
   Where,
 } from '@loopback/repository';
 import {
-  del,
+  post,
+  param,
   get,
   getModelSchemaRef,
-  getWhereSchemaFor,
-  param,
   patch,
-  post,
+  put,
+  del,
   requestBody,
+  response,
 } from '@loopback/rest';
 import { basicAuthorization } from '../middlewares/auth.midd';
-import {
-  Departamento,
-  Ciudad,
-} from '../models';
+import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
-export class DepartamentoCiudadController {
+export class DepartamentoController {
   constructor(
-    @repository(DepartamentoRepository) protected departamentoRepository: DepartamentoRepository,
-  ) { }
+    @repository(DepartamentoRepository)
+    public departamentoRepository : DepartamentoRepository,
+  ) {}
+
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin'],
+    voters: [basicAuthorization],
+  })
+
+  @post('/departamentos')
+  @response(200, {
+    description: 'Departamento model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Departamento)}},
+  })
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Departamento, {
+            title: 'NewDepartamento',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    departamento: Omit<Departamento, 'id'>,
+  ): Promise<Departamento> {
+    return this.departamentoRepository.create(departamento);
+  }
 
   @authenticate('jwt')
   @authorize({
@@ -35,23 +62,33 @@ export class DepartamentoCiudadController {
     voters: [basicAuthorization],
   })
 
-  @get('/departamentos/{id}/ciudads', {
-    responses: {
-      '200': {
-        description: 'Array of Departamento has many Ciudad',
-        content: {
-          'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Ciudad)},
-          },
+  @get('/departamentos/count')
+  @response(200, {
+    description: 'Departamento model count',
+    content: {'application/json': {schema: CountSchema}},
+  })
+  async count(
+    @param.where(Departamento) where?: Where<Departamento>,
+  ): Promise<Count> {
+    return this.departamentoRepository.count(where);
+  }
+
+  @get('/departamentos')
+  @response(200, {
+    description: 'Array of Departamento model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(Departamento, {includeRelations: true}),
         },
       },
     },
   })
   async find(
-    @param.path.string('id') id: string,
-    @param.query.object('filter') filter?: Filter<Ciudad>,
-  ): Promise<Ciudad[]> {
-    return this.departamentoRepository.ciudades(id).find(filter);
+    @param.filter(Departamento) filter?: Filter<Departamento>,
+  ): Promise<Departamento[]> {
+    return this.departamentoRepository.find(filter);
   }
 
   @authenticate('jwt')
@@ -60,66 +97,87 @@ export class DepartamentoCiudadController {
     voters: [basicAuthorization],
   })
 
-  @post('/departamentos/{id}/ciudads', {
-    responses: {
-      '200': {
-        description: 'Departamento model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Ciudad)}},
-      },
-    },
+  @patch('/departamentos')
+  @response(200, {
+    description: 'Departamento PATCH success count',
+    content: {'application/json': {schema: CountSchema}},
   })
-  async create(
-    @param.path.string('id') id: typeof Departamento.prototype.id,
+  async updateAll(
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Ciudad, {
-            title: 'NewCiudadInDepartamento',
-            exclude: ['id'],
-            optional: ['departamentoId']
-          }),
-        },
-      },
-    }) ciudad: Omit<Ciudad, 'id'>,
-  ): Promise<Ciudad> {
-    return this.departamentoRepository.ciudades(id).create(ciudad);
-  }
-
-  @patch('/departamentos/{id}/ciudads', {
-    responses: {
-      '200': {
-        description: 'Departamento.Ciudad PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
-      },
-    },
-  })
-  async patch(
-    @param.path.string('id') id: string,
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Ciudad, {partial: true}),
+          schema: getModelSchemaRef(Departamento, {partial: true}),
         },
       },
     })
-    ciudad: Partial<Ciudad>,
-    @param.query.object('where', getWhereSchemaFor(Ciudad)) where?: Where<Ciudad>,
+    departamento: Departamento,
+    @param.where(Departamento) where?: Where<Departamento>,
   ): Promise<Count> {
-    return this.departamentoRepository.ciudades(id).patch(ciudad, where);
+    return this.departamentoRepository.updateAll(departamento, where);
   }
 
-  @del('/departamentos/{id}/ciudads', {
-    responses: {
-      '200': {
-        description: 'Departamento.Ciudad DELETE success count',
-        content: {'application/json': {schema: CountSchema}},
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin', 'Adviser','Client','User'],
+    voters: [basicAuthorization],
+  })
+
+  @get('/departamentos/{id}')
+  @response(200, {
+    description: 'Departamento model instance',
+    content: {
+      'application/json': {
+        schema: getModelSchemaRef(Departamento, {includeRelations: true}),
       },
     },
   })
-  async delete(
+  async findById(
     @param.path.string('id') id: string,
-    @param.query.object('where', getWhereSchemaFor(Ciudad)) where?: Where<Ciudad>,
-  ): Promise<Count> {
-    return this.departamentoRepository.ciudades(id).delete(where);
+    @param.filter(Departamento, {exclude: 'where'}) filter?: FilterExcludingWhere<Departamento>
+  ): Promise<Departamento> {
+    return this.departamentoRepository.findById(id, filter);
+  }
+
+  @authenticate('jwt')
+  @authorize({
+    allowedRoles: ['Admin'],
+    voters: [basicAuthorization],
+  })
+
+  @patch('/departamentos/{id}')
+  @response(204, {
+    description: 'Departamento PATCH success',
+  })
+  async updateById(
+    @param.path.string('id') id: string,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Departamento, {partial: true}),
+        },
+      },
+    })
+    departamento: Departamento,
+  ): Promise<void> {
+    await this.departamentoRepository.updateById(id, departamento);
+  }
+
+  @put('/departamentos/{id}')
+  @response(204, {
+    description: 'Departamento PUT success',
+  })
+  async replaceById(
+    @param.path.string('id') id: string,
+    @requestBody() departamento: Departamento,
+  ): Promise<void> {
+    await this.departamentoRepository.replaceById(id, departamento);
+  }
+
+  @del('/departamentos/{id}')
+  @response(204, {
+    description: 'Departamento DELETE success',
+  })
+  async deleteById(@param.path.string('id') id: string): Promise<void> {
+    await this.departamentoRepository.deleteById(id);
   }
 }

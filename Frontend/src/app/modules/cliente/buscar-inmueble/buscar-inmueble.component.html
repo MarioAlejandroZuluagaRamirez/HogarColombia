@@ -1,0 +1,27 @@
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th>Imagen</th>
+                <th>Tipo de Oferta</th>
+                <th>Tipo de Inmueble</th>
+                <th>Valor</th>
+                <th>Ciudad</th>
+                <th>Dirección</th>
+                <th>SOLICITAR INMUEBLE</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of listaInmuebles">
+                <td>{{i.foto}}</td>
+                <td>{{i.tipoOferta}}</td>
+                <td>{{i.tipoInmuebleId}}</td>
+                <td>{{i.valor}}</td>
+                <td>{{i.ciudadId}}</td>
+                <td>{{i.direccion}}</td>
+                <td> <a >Solicitar</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+

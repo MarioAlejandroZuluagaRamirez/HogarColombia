@@ -22,6 +22,10 @@ const routes: Routes = [
     loadChildren: () => import("./modules/management/management.module").then(x => x.ManagementModule)
   },
   {
+    path: 'cliente',
+    loadChildren: () => import("./modules/cliente/cliente.module").then(x => x.ClienteModule)
+  },
+  {
     path: '**',
     component: ErrorComponent
   }

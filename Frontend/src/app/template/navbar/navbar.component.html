@@ -35,6 +35,7 @@
         <ul class="nav navbar-nav">
           <li><a routerLink="/content">Inicio</a></li>
           <li><a href="#">Acerca de</a></li>
+          <li><a *ngIf="SesionCliente" routerLink="/cliente/buscar-inmueble">CLIENTE</a></li>
           <li><a *ngIf="SesionIniciada" routerLink="/security/password-change">Cambiar Clave</a></li>
           <li><a *ngIf="!SesionIniciada" routerLink="/security/password-recovery">Recuperar Clave</a></li>
           <li><a *ngIf="SesionIniciada" routerLink="/security/sign-off">Cerrar Sesión</a></li>

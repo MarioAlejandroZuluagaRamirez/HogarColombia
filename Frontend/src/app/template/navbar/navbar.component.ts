@@ -12,13 +12,19 @@ export class NavbarComponent implements OnInit {
 
   SesionIniciada: boolean = false;
   subs: Subscription = new Subscription();
-
+  rol: string = '';
+  SesionCliente: boolean = false;
   constructor(private seguridadServicio: SecurityService) { }
 
   ngOnInit(): void {
     this.subs = this.seguridadServicio.ObtenerDatosUsuarioEnSesion().subscribe((datos: ModeloIdentificar) => {
       this.SesionIniciada = datos.identificado;
+      this.rol = this.seguridadServicio.rol;
+      //alert(this.rol)
+      if(this.rol == 'Client'){
+        this.SesionCliente = true;  
+      alert(this.SesionCliente)
+    }
     });
   }
-
 }
