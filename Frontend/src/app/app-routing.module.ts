@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BuscarInmuebleComponent } from './modules/cliente/buscar-inmueble/buscar-inmueble.component';
 import { ContentComponent } from './template/content/content.component';
 import { ErrorComponent } from './template/error/error.component';
 
@@ -25,6 +26,7 @@ const routes: Routes = [
     path: 'cliente',
     loadChildren: () => import("./modules/cliente/cliente.module").then(x => x.ClienteModule)
   },
+  {path:'cliente/buscar-inmueble', component: BuscarInmuebleComponent},
   {
     path: '**',
     component: ErrorComponent

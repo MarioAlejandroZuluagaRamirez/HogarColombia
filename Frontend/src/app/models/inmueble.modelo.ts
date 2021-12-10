@@ -6,7 +6,7 @@ export class ModeloInmueble{
     nombreEncargado?: string;
     contactoEncargado?: string;
     estado?: string;
-    foto?: string[];
+    foto?: string;
     video?: string;
     ciudadId?: string;
     tipoInmuebleId?: string;

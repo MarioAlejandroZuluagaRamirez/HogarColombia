@@ -1,3 +1,4 @@
+<!--
 <div class="table-responsive">
     <table class="table align-middle">
         <thead>
@@ -9,19 +10,59 @@
                 <th>Ciudad</th>
                 <th>Dirección</th>
                 <th>SOLICITAR INMUEBLE</th>
+                <th style="display: none;">Id</th>
+                <th style="display: none;">Estado</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let i of listaInmuebles">
-                <td>{{i.foto}}</td>
+                <td><img src="{{i.foto}}" alt="" class="img-inmueble"></td>
                 <td>{{i.tipoOferta}}</td>
                 <td>{{i.tipoInmuebleId}}</td>
                 <td>{{i.valor}}</td>
                 <td>{{i.ciudadId}}</td>
                 <td>{{i.direccion}}</td>
-                <td> <a >Solicitar</a></td>
+                <td> <a routerLink="/cliente/crear-solicitud">Solicitar</a></td>
+                <td style="display: none;">{{i.id}}</td>
+                <td style="display: none;">{{i.estado}}</td>
             </tr>
         </tbody>
     </table>
 </div>
+<br>
 
+<div class="row align-items-start">
+    <div class="col">
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" *ngFor="let t of listaTipoInmueble">
+            <option selected>Filtrar por tipo de Oferta</option>
+            <option>{{t.nombre}}</option>
+        </select>
+    </div>
+    <div class="col">
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+            <option selected>Filtrar por tipo de Inmuble</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+</div>
+-->
+<br>
+<div class="row align-items-start">
+    <div class="container col " *ngFor="let i of listaInmuebles">
+        <div class="card" style="width: 18rem;">
+            <img src="{{i.foto}}" class="card-img-top .img-inmueble" alt="">
+            <div class="card-body">
+                <h5 class="card-title">{{i.tipoOferta}} - {{i.valor | currency}}</h5>
+                <p class="card-text">Tipo de Inmueble: {{i.tipoInmuebleId}}</p>
+                <p class="card-text">Ciudad: {{i.ciudadId}}</p>
+                <p class="card-text">Dirección: {{i.direccion}}</p>
+                <p class="card-text" style="display: none;">id: {{i.id}}</p>
+                <p class="card-text" style="display: none;">Estado: {{i.estado}}</p>
+                <a onclick="solicitar()" class="btn btn-primary" id="{{i.id}}">Solicitar Inmueble</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br><br>

@@ -8,7 +8,8 @@ import { NavbarComponent } from './template/navbar/navbar.component';
 import { ContentComponent } from './template/content/content.component';
 import { ErrorComponent } from './template/error/error.component';
 // Importanción manual del modulo
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule} from '@angular/common/http';
+import { InmuebleComponent } from './modules/inmueble/inmueble.component';
 
 // Adicionar componentes y modulos (HttpClienteModule)
 @NgModule({
@@ -17,7 +18,8 @@ import {HttpClientModule} from '@angular/common/http'
     FooterComponent,
     NavbarComponent,
     ContentComponent,
-    ErrorComponent
+    ErrorComponent,
+    InmuebleComponent
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BuscarInmuebleComponent } from './buscar-inmueble/buscar-inmueble.component';
+import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
 
 const routes: Routes = [
   {
@@ -10,6 +11,10 @@ const routes: Routes = [
   {
     path: 'listar-inmuebles',
     component: BuscarInmuebleComponent
+  },
+  {
+    path: 'crear-solicitud',
+    component: CrearSolicitudComponent
   }
 ];
 

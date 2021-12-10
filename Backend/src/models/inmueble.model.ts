@@ -50,11 +50,10 @@ export class Inmueble extends Entity {
   estado: string;
 
   @property({
-    type: 'array',
-    itemType: 'string',
+    type: 'string',
     required: true,
   })
-  foto: string[];
+  foto: string;
 
   @property({
     type: 'string',

@@ -20,10 +20,8 @@ export class NavbarComponent implements OnInit {
     this.subs = this.seguridadServicio.ObtenerDatosUsuarioEnSesion().subscribe((datos: ModeloIdentificar) => {
       this.SesionIniciada = datos.identificado;
       this.rol = this.seguridadServicio.rol;
-      //alert(this.rol)
       if(this.rol == 'Client'){
         this.SesionCliente = true;  
-      alert(this.SesionCliente)
     }
     });
   }
