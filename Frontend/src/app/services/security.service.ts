@@ -5,6 +5,7 @@ import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { ModeloEmail } from '../models/email.modelo';
 import { ModeloIdentificar } from '../models/identificar.modelo';
 import { ModeloUser } from '../models/user.modelo';
+import { ModeloWhoAmI } from '../models/whoAmI.modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -125,6 +126,20 @@ export class SecurityService {
 
   ObtenerDatosUsuarioEnSesion(){
     return this.datosUsuarioEnSesion.asObservable();
+  }
+
+  whoAmI(): Observable<ModeloWhoAmI> {
+    this.token = this.ObtenerToken();
+    alert(`${this.url}/whoAmI`)
+    alert(this.token)
+    return this.http.get<ModeloWhoAmI>(`${this.url}/whoAmI`,
+    {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      }),responseType: "json"
+    }
+    
+    )
   }
 
 }

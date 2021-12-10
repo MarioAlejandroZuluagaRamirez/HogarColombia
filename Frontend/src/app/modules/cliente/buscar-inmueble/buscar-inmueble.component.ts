@@ -3,6 +3,9 @@ import { ModeloInmueble } from 'src/app/models/inmueble.modelo';
 import { InmuebleService } from 'src/app/services/inmueble.service';
 import { ModeloCiudad } from 'src/app/models/ciudad.modelo';
 import { ModeloTipoInmueble } from 'src/app/models/tipoInmueble.modelo';
+import { SecurityService } from 'src/app/services/security.service';
+import { ModeloUser } from 'src/app/models/user.modelo';
+import { ModeloWhoAmI } from 'src/app/models/whoAmI.modelo';
 
 @Component({
   selector: 'app-buscar-inmueble',
@@ -12,8 +15,8 @@ import { ModeloTipoInmueble } from 'src/app/models/tipoInmueble.modelo';
 export class BuscarInmuebleComponent implements OnInit {
 
   listaInmuebles: ModeloInmueble[] = [];
-
-  constructor(private inmuebleServico: InmuebleService) { }
+  idUsuario?: string = "";
+  constructor(private inmuebleServico: InmuebleService, private securityService: SecurityService) { }
 
   ngOnInit(): void {
     this.obtenerListadoInmuebles();
@@ -33,9 +36,16 @@ export class BuscarInmuebleComponent implements OnInit {
           }
       }
     })
+    
   }
 
-  solicitar(){
-    this.inmuebleServico
+  solicitar(id: string | undefined){
+    
+    this.securityService.whoAmI().subscribe((datos:any)=>{
+      alert(datos)
+    },(error: any)=>{
+      alert(error.message)
+    });
+
   }
 }

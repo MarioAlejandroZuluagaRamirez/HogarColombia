@@ -109,7 +109,6 @@ export class UserController {
     return {token};
 
   }
-
   @authenticate('jwt')
   @get('/whoAmI', {
     responses: {
