@@ -1,1 +1,36 @@
-<p>buscar-solicitud works!</p>
+<h1 class="display-1 text-center">LISTA DE SOLICITUDES REALIZADAS</h1>
+<br>
+<div class="table-responsive">
+    <table class="table align-middle">
+        <thead>
+            <tr>
+                <th class="align-middle text-center col-2">Imagen</th>
+                <th class="align-middle ">Estado</th>
+                <th class="align-middle ">Tipo de Oferta</th>
+                <th class="align-middle ">Tipo de Inmueble</th>
+                <th class="align-middle ">Valor</th>
+                <th class="align-middle ">Ciudad</th>
+                <th class="align-middle ">Dirección</th>
+                <th class="align-middle "></th>
+                <th class="align-middle "></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let i of listaCompleta">
+                <td class="align-middle col-2" ><img src="{{i.foto}}" class="img-inmueble img-thumbnail"></td>
+                <td class="align-middle">{{i.estado}} </td>
+                <td class="align-middle">{{i.tipoOferta}} </td>
+                <td class="align-middle">{{i.tipoInmueble}} </td>
+                <td class="align-middle">{{i.valor | currency}} </td>
+                <td class="align-middle">{{i.ciudad}} </td>
+                <td class="align-middle">{{i.direccion}} </td>
+                <td *ngIf="i.boton1" class="align-middle"><button type="button" class="btn btn-danger align-middle text-boton-lista">Eliminar</button></td>
+                <td *ngIf="i.boton2" class="align-middle"><button type="button" class="btn btn-primary text-boton-lista" >Descargar Contrato</button></td>
+                <td *ngIf="i.boton3" class="align-middle"><button type="button" class="btn btn-primary text-boton-lista">Adjuntar Contrato</button></td>
+                <td *ngIf="i.boton4" class="align-middle"><button type="button" class="btn btn-primary text-boton-lista">Ver Comentarios</button></td>
+                <td *ngIf="i.boton5" class="align-middle"><button type="button" class="btn btn-success text-boton-lista">Ver Contrato</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<br>

@@ -4,8 +4,9 @@ import { InmuebleService } from 'src/app/services/inmueble.service';
 import { ModeloCiudad } from 'src/app/models/ciudad.modelo';
 import { ModeloTipoInmueble } from 'src/app/models/tipoInmueble.modelo';
 import { SecurityService } from 'src/app/services/security.service';
-import { ModeloUser } from 'src/app/models/user.modelo';
-import { ModeloWhoAmI } from 'src/app/models/whoAmI.modelo';
+import { ModeloSolicitud } from 'src/app/models/solicitud.modelo';
+import { formatDate } from '@angular/common';
+
 
 @Component({
   selector: 'app-buscar-inmueble',
@@ -16,6 +17,9 @@ export class BuscarInmuebleComponent implements OnInit {
 
   listaInmuebles: ModeloInmueble[] = [];
   idUsuario?: string = "";
+  solicitud: ModeloSolicitud = new ModeloSolicitud();
+  
+
   constructor(private inmuebleServico: InmuebleService, private securityService: SecurityService) { }
 
   ngOnInit(): void {
@@ -23,7 +27,7 @@ export class BuscarInmuebleComponent implements OnInit {
   }
 
   obtenerListadoInmuebles() {
-    this.inmuebleServico.obtenerInmueblesFiltro("Activo").subscribe((datos: ModeloInmueble[]) => {
+    this.inmuebleServico.obtenerInmueblesFiltro('Activo').subscribe((datos: ModeloInmueble[]) => {
       this.listaInmuebles = datos;
       if (this.listaInmuebles != null) {
           for (let item of this.listaInmuebles) {
@@ -40,12 +44,23 @@ export class BuscarInmuebleComponent implements OnInit {
   }
 
   solicitar(id: string | undefined){
-    
     this.securityService.whoAmI().subscribe((datos:any)=>{
-      alert(datos)
+      this.idUsuario = datos
+      let now= new Date().toString();
+      this.solicitud.fecha = formatDate(now,"yyyy-MM-ddThh:mm:ssZ",'en-us')
+      this.solicitud.inmuebleId = id;
+      this.solicitud.clienteId = this.idUsuario;
+      this.solicitud.estado = 'Enviado'
+      this.solicitud.comentarios = ''
+      this.solicitud.contrato = ''
+      console.log(JSON.stringify(this.solicitud))
+      this.inmuebleServico.solicitarInmueble(this.solicitud).subscribe((datos: ModeloSolicitud)=>{
+        alert('Solicitud Enviada');
+      });
+     // this.boton_pulsado = !this.boton_pulsado;
     },(error: any)=>{
       alert(error.message)
-    });
-
+    });   
+    
   }
 }

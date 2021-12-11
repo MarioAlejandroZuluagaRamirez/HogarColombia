@@ -130,16 +130,13 @@ export class SecurityService {
 
   whoAmI(): Observable<ModeloWhoAmI> {
     this.token = this.ObtenerToken();
-    alert(`${this.url}/whoAmI`)
-    alert(this.token)
-    return this.http.get<ModeloWhoAmI>(`${this.url}/whoAmI`,
+    return this.http.get(`${this.url}/whoAmI`,
     {
       headers: new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`
-      }),responseType: "json"
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type':'application/json',
+      }),responseType: "text" as 'json' 
     }
-    
     )
   }
-
 }
