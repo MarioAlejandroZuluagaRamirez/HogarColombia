@@ -125,6 +125,8 @@ export class SecurityService {
   }
 
   ObtenerDatosUsuarioEnSesion(){
+    this.rol = this.ObtenerRol();
+
     return this.datosUsuarioEnSesion.asObservable();
   }
 

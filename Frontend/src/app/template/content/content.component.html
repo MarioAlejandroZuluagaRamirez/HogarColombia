@@ -1,6 +1,6 @@
 <br>
-<div class="row align-items-start">
-    <div class="container col " *ngFor="let i of listaInmuebles">
+<div class="row align-items-start"> 
+    <div class="col-3 " *ngFor="let i of listaInmuebles">
         <div class="card" style="width: 18rem;">
             <img src="{{i.foto}}" class="card-img-top .img-inmueble" alt="">
             <div class="card-body">
@@ -11,7 +11,7 @@
                 <p class="card-text" style="display: none;">id: {{i.id}}</p>
                 <p class="card-text" style="display: none;">Estado: {{i.estado}}</p>
             </div>
-        </div>
+        </div><br>
     </div>
 </div>
 <br><br>

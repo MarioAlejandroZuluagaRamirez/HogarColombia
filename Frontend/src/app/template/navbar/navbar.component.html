@@ -33,6 +33,10 @@
             Disponibles</a></li>
         <li *ngIf="SesionCliente"><a class="dropdown-item" routerLink="/cliente/buscar-solicitud">Solicitudes
             Realizadas</a></li>
+        <li *ngIf="SesionAdmin"><a class="dropdown-item" routerLink="/admin/departamentos">Departamentos</a></li>
+        <li *ngIf="SesionAdmin"><a class="dropdown-item" routerLink="/admin/ciudades">Ciudades</a></li>
+        <li *ngIf="SesionAdmin"><a class="dropdown-item" routerLink="/admin/asesores">Asesores</a></li>
+
         <li><a *ngIf="SesionIniciada" routerLink="/security/password-change">Cambiar Clave</a></li>
         <li><a *ngIf="!SesionIniciada" routerLink="/security/password-recovery">Recuperar Clave</a></li>
         <li><a *ngIf="SesionIniciada" routerLink="/security/sign-off">Cerrar Sesión</a></li>

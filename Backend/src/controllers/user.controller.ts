@@ -223,7 +223,26 @@ export class UserController {
   }
 
   @authenticate.skip()
-  @get('/users/')
+  @get('/usersAll/')
+  @response(200, {
+    description: 'Array of Users model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(User, {includeRelations: false}),
+        },
+      },
+    },
+  }) 
+  async findAll(
+    @param.filter(User) filter?: Filter<User>,
+  ): Promise<User[]> {
+      return this.userRepository.find(filter);
+  }
+
+
+@get('/users/')
   @response(200, {
     description: 'Array of Users model instances',
     content: {
@@ -245,6 +264,8 @@ export class UserController {
       return false;
     }
   }
+
+
 
   @authenticate.skip()
   @get('/users/email')

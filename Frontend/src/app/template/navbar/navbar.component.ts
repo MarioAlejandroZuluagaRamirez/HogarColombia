@@ -14,15 +14,30 @@ export class NavbarComponent implements OnInit {
   subs: Subscription = new Subscription();
   rol: string = '';
   SesionCliente: boolean = false;
+  router: any;
+  SesionAdmin: boolean = false;
+  SesionAdviser: boolean = false;
+
   constructor(private seguridadServicio: SecurityService) { }
 
   ngOnInit(): void {
     this.subs = this.seguridadServicio.ObtenerDatosUsuarioEnSesion().subscribe((datos: ModeloIdentificar) => {
       this.SesionIniciada = datos.identificado;
-      this.rol = this.seguridadServicio.rol;
-      if(this.rol == 'Client'){
-        this.SesionCliente = true;  
-    }
+      if (this.SesionIniciada) {
+        let datosString = localStorage.getItem("datosSesion");
+        if (datosString) {
+          let datos = JSON.parse(datosString);
+          if (datos.rol == 'Client') { this.SesionCliente = true; }
+          else if (datos.rol == 'Admin') { this.SesionAdmin = true }
+          else if (datos.rol == 'Adviser') { this.SesionAdviser = true }
+        }
+      }
+      else{
+        this.SesionCliente = false;
+        this.SesionAdmin = false; 
+        this.SesionAdviser = false
+      }
     });
   }
+  
 }

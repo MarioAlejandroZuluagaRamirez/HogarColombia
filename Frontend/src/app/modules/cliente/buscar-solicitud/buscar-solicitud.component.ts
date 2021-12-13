@@ -17,31 +17,34 @@ export class BuscarSolicitudComponent implements OnInit {
   listaSolicitudes: ModeloSolicitud[] = []
   listaCompleta: ModeloListaSolicitud[] = []
   idUsuario?: string = "";
+  solicitud: ModeloSolicitud = new ModeloSolicitud();
 
-  constructor(private solicitudService: SolicitudService, private securityService: SecurityService, private inmuebleService: InmuebleService) { }
+  constructor(private solicitudService: SolicitudService, private securityService: SecurityService, 
+    private inmuebleService: InmuebleService) { }
 
   ngOnInit(): void {
     this.obtenerListadoSolicitudes();
   }
 
   obtenerListadoSolicitudes() {
-
     this.securityService.whoAmI().subscribe((id: any) => {
       this.idUsuario = id;
       this.solicitudService.obtenerSolicitudesUsuario(this.idUsuario).subscribe((dSolicitud: ModeloListaSolicitud[]) => {
         this.listaSolicitudes = dSolicitud;
         if (this.listaSolicitudes != null) {
           for (let i of this.listaSolicitudes) {
+
             let mostrarB1 = false;//Eliminar
-            let mostrarB2 = false;//Descargar Contrato
-            let mostrarB3 = false;//Adjuntar Contrato
-            let mostrarB4 = false;//Ver comentarios
-            let mostrarB5 = false;//Ver contrato
+            let mostrarB2 = false;//Descargar y Adjuntar Contrato
+            let mostrarB3 = false;//Ver comentarios
+            let mostrarB4 = false;//Ver contrato
+            let mostrarB5 = true;//Filtro lista
 
             if (i.estado === 'Enviado') { mostrarB1 = true }
-            else if (i.estado === 'Aceptado') { mostrarB2 = true; mostrarB3 = true }
-            else if (i.estado === 'Rechazado') { mostrarB4 = true }
-            else if (i.estado === 'Alquilado' || i.estado === 'Comprado') { mostrarB5 = true }
+            else if (i.estado === 'Aceptado') { mostrarB2 = true}
+            else if (i.estado === 'Rechazado') { mostrarB3 = true }
+            else if (i.estado === 'Inactivo' || i.estado === 'Alquilado' || i.estado === 'Comprado') { mostrarB5 = false }
+
 
             this.inmuebleService.obtenerInmuebleId(i.inmuebleId).subscribe((inmueble: ModeloInmueble) => {
               this.inmuebleService.obtenerCiudad(inmueble.id).subscribe((city: ModeloCiudad) => {
@@ -72,5 +75,22 @@ export class BuscarSolicitudComponent implements OnInit {
       });
     });
   }
+
+  eliminarSolicitud(id: string | undefined) {
+    console.log('Entro en metodo boton')
+    this.solicitudService.obtenerSolicitudId(id).subscribe((datos: ModeloSolicitud) => {
+      this.solicitud.id = id
+      this.solicitud.fecha = datos.fecha
+      this.solicitud.estado = 'Inactivo'
+      this.solicitud.comentarios = datos.comentarios
+      this.solicitud.contrato = datos.contrato
+      this.solicitud.inmuebleId = datos.inmuebleId
+      this.solicitud.clienteId = datos.clienteId;
+      this.solicitudService.eliminarSolicitud(id, this.solicitud).subscribe((datosSolic: ModeloSolicitud) => {
+        alert('Solicitud eliminada con éxito')
+      })
+    })
+  }
+
 }
 

@@ -19,7 +19,7 @@ export class ContentComponent implements OnInit {
   }
 
   obtenerListadoInmuebles() {
-    this.inmuebleServico.obtenerInmueblesTodos().subscribe((datos: ModeloInmueble[]) => {
+    this.inmuebleServico.obtenerInmueblesFiltro('Activo').subscribe((datos: ModeloInmueble[]) => {
       this.listaInmuebles = datos;
       if (this.listaInmuebles != null) {
           for (let item of this.listaInmuebles) {

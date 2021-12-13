@@ -20,11 +20,6 @@ export class CiudadDepartamentoController {
     @repository(CiudadRepository)
     public ciudadRepository: CiudadRepository,
   ) { }
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin', 'Adviser','Client','User'],
-    voters: [basicAuthorization],
-  })
 
   @get('/ciudads/{id}/departamento', {
     responses: {

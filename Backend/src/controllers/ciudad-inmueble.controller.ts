@@ -29,11 +29,6 @@ export class CiudadInmuebleController {
     @repository(CiudadRepository) protected ciudadRepository: CiudadRepository,
   ) { }
   
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin', 'Adviser','Client','User'],
-    voters: [basicAuthorization],
-  })
 
   @get('/ciudads/{id}/inmuebles', {
     responses: {
@@ -54,11 +49,6 @@ export class CiudadInmuebleController {
     return this.ciudadRepository.inmuebles(id).find(filter);
   }
   
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin'],
-    voters: [basicAuthorization],
-  })
 
   @post('/ciudads/{id}/inmuebles', {
     responses: {

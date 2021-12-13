@@ -29,11 +29,6 @@ export class DepartamentoController {
     public departamentoRepository : DepartamentoRepository,
   ) {}
 
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin'],
-    voters: [basicAuthorization],
-  })
 
   @post('/departamentos')
   @response(200, {
@@ -56,11 +51,6 @@ export class DepartamentoController {
     return this.departamentoRepository.create(departamento);
   }
 
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin', 'Adviser','Client','User'],
-    voters: [basicAuthorization],
-  })
 
   @get('/departamentos/count')
   @response(200, {
@@ -91,11 +81,6 @@ export class DepartamentoController {
     return this.departamentoRepository.find(filter);
   }
 
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin'],
-    voters: [basicAuthorization],
-  })
 
   @patch('/departamentos')
   @response(200, {
@@ -116,11 +101,6 @@ export class DepartamentoController {
     return this.departamentoRepository.updateAll(departamento, where);
   }
 
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin', 'Adviser','Client','User'],
-    voters: [basicAuthorization],
-  })
 
   @get('/departamentos/{id}')
   @response(200, {
@@ -138,11 +118,6 @@ export class DepartamentoController {
     return this.departamentoRepository.findById(id, filter);
   }
 
-  @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin'],
-    voters: [basicAuthorization],
-  })
 
   @patch('/departamentos/{id}')
   @response(204, {

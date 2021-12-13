@@ -1,7 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AsesoresComponent } from './modules/admin/asesores/asesores.component';
+import { CiudadesComponent } from './modules/admin/ciudades/ciudades.component';
+import { DepartamentosComponent } from './modules/admin/departamentos/departamentos.component';
+import { NuevoDeptoComponent } from './modules/admin/nuevo-depto/nuevo-depto.component';
 import { BuscarInmuebleComponent } from './modules/cliente/buscar-inmueble/buscar-inmueble.component';
 import { BuscarSolicitudComponent } from './modules/cliente/buscar-solicitud/buscar-solicitud.component';
+import { EliminarSolicitudComponent } from './modules/cliente/eliminar-solicitud/eliminar-solicitud.component';
 import { ContentComponent } from './template/content/content.component';
 import { ErrorComponent } from './template/error/error.component';
 
@@ -29,6 +34,20 @@ const routes: Routes = [
   },
   {path:'cliente/buscar-inmueble', component: BuscarInmuebleComponent},
   {path:'cliente/buscar-solicitud', component: BuscarSolicitudComponent},
+  {path:'cliente/eliminar-solicitud', component: EliminarSolicitudComponent},
+  {
+    path: 'admin',
+    loadChildren: () => import("./modules/admin/admin.module").then(x => x.AdminModule)
+  },
+  {path:'admin/asesores', component: AsesoresComponent},
+  {path:'admin/ciudades', component: CiudadesComponent},
+  {path:'admin/departamentos', component: DepartamentosComponent},
+  {path:'admin/nuevo-depto', component: NuevoDeptoComponent},
+
+
+
+
+  
   {
     path: '**',
     component: ErrorComponent

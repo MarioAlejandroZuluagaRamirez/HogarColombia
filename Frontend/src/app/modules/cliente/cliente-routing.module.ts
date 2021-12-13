@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BuscarInmuebleComponent } from './buscar-inmueble/buscar-inmueble.component';
-import { CrearSolicitudComponent } from './crear-solicitud/crear-solicitud.component';
+import { EliminarSolicitudComponent } from './eliminar-solicitud/eliminar-solicitud.component';
 
 const routes: Routes = [
   {
@@ -12,10 +12,16 @@ const routes: Routes = [
     path: 'listar-inmuebles',
     component: BuscarInmuebleComponent
   },
+  
   {
-    path: 'crear-solicitud',
-    component: CrearSolicitudComponent
-  }
+    path: 'eliminar-solicitud/:id',
+    component: EliminarSolicitudComponent
+  },
+  {
+    path: 'eliminar-solicitud',
+    component: EliminarSolicitudComponent
+  },
+  
 ];
 
 @NgModule({
