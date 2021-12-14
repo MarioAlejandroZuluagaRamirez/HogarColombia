@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AsesoresComponent } from './modules/admin/asesores/asesores.component';
 import { CiudadesComponent } from './modules/admin/ciudades/ciudades.component';
@@ -29,6 +29,10 @@ const routes: Routes = [
     loadChildren: () => import("./modules/management/management.module").then(x => x.ManagementModule)
   },
   {
+    path: 'adviser',
+    loadChildren: () => import("./modules/adviser/adviser.module").then(x => x.AdviserModule)
+  },
+  {
     path: 'cliente',
     loadChildren: () => import("./modules/cliente/cliente.module").then(x => x.ClienteModule)
   },
@@ -44,11 +48,6 @@ const routes: Routes = [
   {path:'admin/departamentos', component: DepartamentosComponent},
   {path:'admin/nuevo-depto', component: NuevoDeptoComponent},
   {path:'admin/eliminar-asesor', component: NuevoDeptoComponent},
-
-
-
-
-  
   {
     path: '**',
     component: ErrorComponent

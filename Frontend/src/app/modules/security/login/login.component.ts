@@ -32,13 +32,9 @@ export class LoginComponent implements OnInit {
       this.servicioSeguridad.AlmacenarSesion(datos)
       this.router.navigate(['content'])
       this.servicioSeguridad.Recuperarme().subscribe((roles: any) => {
-        
         const datos1 = {'token':datos.token, 'identificado': datos.identificado, 'rol': roles.role}
         this.servicioSeguridad.EliminarInformacionSesion();
         this.servicioSeguridad.AlmacenarSesion(datos1)
-
-          //datosSesion[0].rol = roles.rol;
-        // Change value
       }, (error: any) => {
         alert('cualquier cosa')
       })
@@ -47,5 +43,4 @@ export class LoginComponent implements OnInit {
       alert("Nombre de usuario o contraseña incorrectos. Por favor válide nuevamente");
     })
   }
-
 }

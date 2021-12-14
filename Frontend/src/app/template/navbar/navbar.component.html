@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -36,7 +35,7 @@
         <li *ngIf="SesionAdmin"><a class="dropdown-item" routerLink="/admin/departamentos">Departamentos</a></li>
         <li *ngIf="SesionAdmin"><a class="dropdown-item" routerLink="/admin/ciudades">Ciudades</a></li>
         <li *ngIf="SesionAdmin"><a class="dropdown-item" routerLink="/admin/asesores">Asesores</a></li>
-
+          <li><a *ngIf="SesionAdviser" routerLink="/adviser/property-find-all">Asesor</a></li>
         <li><a *ngIf="SesionIniciada" routerLink="/security/password-change">Cambiar Clave</a></li>
         <li><a *ngIf="!SesionIniciada" routerLink="/security/password-recovery">Recuperar Clave</a></li>
         <li><a *ngIf="SesionIniciada" routerLink="/security/sign-off">Cerrar Sesión</a></li>
@@ -51,5 +50,4 @@
     </div>
   </nav>
 </body>
-
 </html>

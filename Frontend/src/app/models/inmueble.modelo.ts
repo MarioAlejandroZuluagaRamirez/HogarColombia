@@ -11,5 +11,4 @@ export class ModeloInmueble{
     ciudadId?: string;
     tipoInmuebleId?: string;
     asesorId?: string;
-
 }
