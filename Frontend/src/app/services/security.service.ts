@@ -1,11 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DateISOValidator } from 'ng2-validation';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { ModeloEmail } from '../models/email.modelo';
 import { ModeloIdentificar } from '../models/identificar.modelo';
 import { ModeloUser } from '../models/user.modelo';
-
+import { ModeloWhoAmI } from '../models/whoAmI.modelo';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class SecurityService {
   token: string = '';
   rol: string = '';
   // Agregar al constructor private http: HttpClient
-  constructor(private http: HttpClient)  { 
+  constructor(private http: HttpClient) { 
     this.VerificarSesionActual();
     this.token = this.ObtenerToken();
     this.rol = this.ObtenerRol();
@@ -48,10 +48,7 @@ export class SecurityService {
   }
 
   Recuperarme(): Observable<ModeloUser> {
-<<<<<<< HEAD
     this.token = this.ObtenerToken();
-=======
->>>>>>> e29dccd71d05f9647eda27caa255f294655da437
     return this.http.get<ModeloUser>(`${this.url}/users/me`,{
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.token}`
@@ -59,11 +56,8 @@ export class SecurityService {
     })
   }
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> e29dccd71d05f9647eda27caa255f294655da437
   CambiarClave(user: ModeloUser): Observable<ModeloUser>{
     return this.http.patch<ModeloUser>(`${this.url}/user/${user.id}`,user,{
       headers: new HttpHeaders({
@@ -131,7 +125,20 @@ export class SecurityService {
   }
 
   ObtenerDatosUsuarioEnSesion(){
+    this.rol = this.ObtenerRol();
+
     return this.datosUsuarioEnSesion.asObservable();
   }
 
+  whoAmI(): Observable<ModeloWhoAmI> {
+    this.token = this.ObtenerToken();
+    return this.http.get(`${this.url}/whoAmI`,
+    {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`,
+        'Content-Type':'application/json',
+      }),responseType: "text" as 'json' 
+    }
+    )
+  }
 }
