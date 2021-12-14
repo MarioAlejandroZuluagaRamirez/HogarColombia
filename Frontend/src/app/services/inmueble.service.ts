@@ -19,29 +19,56 @@ export class InmuebleService {
   }
 
   obtenerInmueblesFiltro(estado: string | undefined): Observable<ModeloInmueble[]> {
-    return this.http.get<ModeloInmueble[]>(`${this.url}/inmuebles?filter={"where":{"estado":"${estado}"}}`)
+    return this.http.get<ModeloInmueble[]>(`${this.url}/inmuebles?filter={"where":{"estado":"${estado}"}}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
+
   obtenerInmueblesTodos(): Observable<ModeloInmueble[]> {
-    return this.http.get<ModeloInmueble[]>(`${this.url}/inmuebles`)
+    return this.http.get<ModeloInmueble[]>(`${this.url}/inmuebles`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
 
   obtenerInmuebleId(id:string | undefined){
-    return this.http.get<ModeloInmueble>(`${this.url}/inmuebles/${id}`)
+    return this.http.get<ModeloInmueble>(`${this.url}/inmuebles/${id}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   obtenerTipoInmueble(id: string | undefined): Observable<ModeloTipoInmueble> {
-    return this.http.get<ModeloTipoInmueble>(`${this.url}/inmuebles/${id}/tipo-inmueble`)
+    return this.http.get<ModeloTipoInmueble>(`${this.url}/inmuebles/${id}/tipo-inmueble`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
 
   obtenerCiudad(id: string | undefined): Observable<ModeloCiudad> {
-    return this.http.get<ModeloCiudad>(`${this.url}/inmuebles/${id}/ciudad`)
+    return this.http.get<ModeloCiudad>(`${this.url}/inmuebles/${id}/ciudad`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
 
   obtenerCiudadId(id: string | undefined): Observable<ModeloCiudad> {
-    return this.http.get<ModeloCiudad>(`${this.url}/ciudades/${id}`)
+    return this.http.get<ModeloCiudad>(`${this.url}/ciudades/${id}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   solicitarInmueble(solicitud: ModeloSolicitud): Observable<ModeloSolicitud> {
     return this.http.post<ModeloSolicitud>(`${this.url}/solicitudes`, solicitud, {
-      headers: new HttpHeaders({ })
+       headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
     })
   }
 

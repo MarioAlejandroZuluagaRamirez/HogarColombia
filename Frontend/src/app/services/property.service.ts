@@ -29,32 +29,67 @@ export class PropertyService {
     })
   }
   ObtenerInmueblePorId(inmuebleid?: string): Observable<ModeloInmueble> {
-    return this.http.get<ModeloInmueble>(`${this.url}/inmuebles/${inmuebleid}`);
+    return this.http.get<ModeloInmueble>(`${this.url}/inmuebles/${inmuebleid}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ActualizarInmueble(inmueble: ModeloInmueble): Observable<ModeloInmueble> {
     return this.http.patch<ModeloInmueble>(`${this.url}/inmuebles/${inmueble.id}`, inmueble, {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
     })
   }
   ObtenerCiudadPorId(ciudadid?: string): Observable<ModeloCiudad> {
-    return this.http.get<ModeloCiudad>(`${this.url}/ciudades/${ciudadid}`);
+    return this.http.get<ModeloCiudad>(`${this.url}/ciudades/${ciudadid}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ObtenerClientePorId(clienteid?: string): Observable<ModeloUser> {
-    return this.http.get<ModeloUser>(`${this.url}/users/${clienteid}`);
+    return this.http.get<ModeloUser>(`${this.url}/users/${clienteid}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ObtenerDepartamentoPorCiudad(departamentoid?: string): Observable<ModeloDepartamento> {
-    return this.http.get<ModeloDepartamento>(`${this.url}/ciudads/${departamentoid}/departamento`);
+    return this.http.get<ModeloDepartamento>(`${this.url}/ciudads/${departamentoid}/departamento`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ObtenerDepartamentos(): Observable<ModeloDepartamento[]> {
-    return this.http.get<ModeloDepartamento[]>(`${this.url}/departamentos`);
+    return this.http.get<ModeloDepartamento[]>(`${this.url}/departamentos`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ObtenerCiudadesPorDepartamento(departamentoid?: string): Observable<ModeloCiudad[]> {
-    return this.http.get<ModeloCiudad[]>(`${this.url}/departamentos/${departamentoid}/ciudads`);
+    return this.http.get<ModeloCiudad[]>(`${this.url}/departamentos/${departamentoid}/ciudads`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ObtenerTiposDeInmueblePorId(tipoinmuebleid?: string): Observable<ModeloTipoInmueble> {
-    return this.http.get<ModeloTipoInmueble>(`${this.url}/tipo-inmuebles/${tipoinmuebleid}`);
+    return this.http.get<ModeloTipoInmueble>(`${this.url}/tipo-inmuebles/${tipoinmuebleid}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ObtenerInmueblesFiltro(asesorId: string | undefined, estado: string): Observable<ModeloInmueble[]> {
-    return this.http.get<ModeloInmueble[]>(`${this.url}/inmuebles?filter={"where":{"asesorId":"${asesorId}","estado":"${estado}"}}`);
+    return this.http.get<ModeloInmueble[]>(`${this.url}/inmuebles?filter={"where":{"asesorId":"${asesorId}","estado":"${estado}"}}`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
   }
   ObtenerSolicitudesPorInmuebleId(InmuebleId?: string): Observable<ModeloSolicitud[]> {
     return this.http.get<ModeloSolicitud[]>(`${this.url}/solicitudes?filter={"where":{"inmuebleId":"${InmuebleId}"}}`, {
