@@ -43,9 +43,9 @@ export class SignupComponent implements OnInit {
     cliente.password = this.fgValidatorSignup.controls['password'].value;
 
     if (cliente.email){
-      this.servicioSeguridad.ValidaCorreExistente(cliente.email).subscribe((datos:ModeloEmail) =>{
+      this.servicioSeguridad.ValidaCorreoExistente(cliente.email).subscribe((datos:ModeloEmail) =>{
         if (datos){
-          alert("Correo ya existe, por favor inicia sesión o recupera la clave");
+          alert("Correo ya existe, por favor inicia sesión o recupera la contraseña");
         }else{
           this.servicioSeguridad.RegistrarCliente(cliente).subscribe((datos: ModeloUser) => {
             alert('Usuario registrado correctamente, por favor inicie sesión');

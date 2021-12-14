@@ -16,6 +16,7 @@ import {
   get,
   getModelSchemaRef,
   param,
+  patch,
   post,
   requestBody,
   response,
@@ -30,6 +31,7 @@ import {UserRepository} from '../repositories';
 import {UserProfileSchema} from './specs/user-controller.specs';
 import fetch from 'cross-fetch';
 import IsEmail from 'isemail';
+import { promises } from 'dns';
 
 @model()
 export class NewUserRequest extends User {
@@ -64,6 +66,8 @@ export const CredentialsRequestBody = {
 };
 
 export class UserController {
+  urlMensajeria: string = 'http://127.0.0.1:5000'
+
   constructor(
     @inject(TokenServiceBindings.TOKEN_SERVICE)
     public jwtService: TokenService,
@@ -166,7 +170,7 @@ export class UserController {
     let contenido = `Hola, su registro a Hogar Colombia ha sido exitoso. Su nombre de usuario es: ${destino} y su contraseña es ${newUserRequest.password}.`;
 
     // Notificación al usuario, consumo del servicio de sypder (python)
-    fetch(`http://127.0.0.1:5000/envio-correo?correo_destino=${destino}&asunto=${asunto}&mensaje=${contenido}`)
+    fetch(`${this.urlMensajeria}/envio-correo?correo_destino=${destino}&asunto=${asunto}&mensaje=${contenido}`)
     .then((data:any) => {
     console.log(data)
     })
@@ -196,6 +200,7 @@ export class UserController {
   async findById(@param.path.string('userId') userId: string): Promise<User> {
     return this.userRepository.findById(userId);
   }
+
   @get('/users/me', {
     responses: {
       '200': {
@@ -210,7 +215,7 @@ export class UserController {
   })
   @authenticate('jwt')
   @authorize({
-    allowedRoles: ['Admin','User'],
+    allowedRoles: ['Admin','User','Client'],
     voters: [basicAuthorization],
   })
   async printCurrentUser(
@@ -244,5 +249,60 @@ export class UserController {
     }else{
       return false;
     }
+  }
+
+  @authenticate.skip()
+  @get('/users/email')
+  @response(200, {
+    description: 'User model instances',
+    content: {
+      'application/json': {
+        schema: {
+          'x-ts-type': User,
+        },
+      },
+    },
+  }) 
+  async findByEmail(
+    @param.filter(User) filter?: Filter<User>,
+  ): Promise<User | null> {
+    return this.userRepository.findOne(filter);
+  }
+
+  @patch('/user/{id}')
+  @response(204, {
+    description: 'user PATCH success',
+  })
+  // @authenticate('jwkt')
+  async updateById(
+    @param.path.string('id') id: string,
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(NewUserRequest, {
+            title: 'NewUser',
+          }),
+        },
+      },
+    })
+    user: NewUserRequest,
+  ): Promise<User | void> {
+    const password = await hash(user.password, await genSalt());
+    const savedUser = await this.userRepository.updateById(id,_.omit(user,"password"));
+    if (user.password != null || user.password != ""){
+      await this.userRepository.userCredentials(user.id).patch({password});
+
+      let destino = user.email;
+      let asunto = "Cambio de Contraseña en Colombia MinTic";
+      let contenido = `Hola, cambibo de contraseña ha sido exitoso. Su nueva contraseña es ${user.password}.`;
+
+      // Notificación al usuario, consumo del servicio de sypder (python)
+      fetch(`${this.urlMensajeria}/envio-correo?correo_destino=${destino}&asunto=${asunto}&mensaje=${contenido}`)
+      .then((data:any) => {
+      console.log(data)
+      })
+    }
+
+    return savedUser;
   }
 }

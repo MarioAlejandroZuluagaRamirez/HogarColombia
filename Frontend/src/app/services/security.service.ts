@@ -31,7 +31,7 @@ export class SecurityService {
     })
   }
 
-  ValidaCorreExistente(email: string): Observable<ModeloEmail>{
+  ValidaCorreoExistente(email: string): Observable<ModeloEmail>{
     return this.http.get<ModeloEmail>(`${this.url}/users?filter={"where":{"email":"${email}"}}`)
   }
 
@@ -48,7 +48,10 @@ export class SecurityService {
   }
 
   Recuperarme(): Observable<ModeloUser> {
+<<<<<<< HEAD
     this.token = this.ObtenerToken();
+=======
+>>>>>>> e29dccd71d05f9647eda27caa255f294655da437
     return this.http.get<ModeloUser>(`${this.url}/users/me`,{
       headers: new HttpHeaders({
         'Authorization': `Bearer ${this.token}`
@@ -56,8 +59,11 @@ export class SecurityService {
     })
   }
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> e29dccd71d05f9647eda27caa255f294655da437
   CambiarClave(user: ModeloUser): Observable<ModeloUser>{
     return this.http.patch<ModeloUser>(`${this.url}/user/${user.id}`,user,{
       headers: new HttpHeaders({
