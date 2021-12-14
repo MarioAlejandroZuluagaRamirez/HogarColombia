@@ -21,6 +21,8 @@ export class AsesoresComponent implements OnInit {
     this.adminService.asesores().subscribe((datos: ModeloUser[])=>{
       this.lista = datos
     })
-    
   }
+
+  
+
 }

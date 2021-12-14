@@ -4,7 +4,7 @@
 <h1 class="display-1 text-center">ASESORES</h1>
 <br><br>
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button type="button" class="btn btn-success text-boton-lista">CREAR</button>   
+    <button type="button" class="btn btn-success text-boton-lista" routerLink="/admin/nuevo-asesor">CREAR</button>   
 </div>
     <div class="table-responsive">
     <table class="table align-middle">
@@ -30,7 +30,7 @@
                 <td class="align-middle">{{i.email}} </td>
                 <td class="align-middle">{{i.telefono}} </td>
                 <td class="align-middle">{{i.estado}} </td>
-                <td class="align-middle"><button type="button" class="btn btn-danger text-boton-lista">Eliminar</button>
+                <td class="align-middle"><button type="button" class="btn btn-danger text-boton-lista" [routerLink]="['/admin/eliminar-asesor',i.id]">Eliminar</button>
                 </td>
                 <td class="align-middle"><button type="button"
                         class="btn btn-primary text-boton-lista">Modificar</button></td>

@@ -57,4 +57,14 @@ export class AdminService {
       })
     })
   }
+
+  obtenerAsesor(id: string | undefined):Observable<ModeloUser>{
+    return this.http.get<ModeloUser>(`${this.url}/users/${id}`)
+  }
+  
+  eliminarAsesor(id: string | undefined, user: ModeloUser): Observable<ModeloUser> {
+    return this.http.patch<ModeloUser>(`${this.url}/user/${id}`, user, {
+      headers: new HttpHeaders({ })
+    })
+  }
 }

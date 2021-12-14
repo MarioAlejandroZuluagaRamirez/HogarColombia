@@ -23,10 +23,6 @@ export class SolicitudService {
     return this.http.get<ModeloSolicitud[]>(`${this.url}/users/${id}/solicituds?filter={"where":{"estado":${estado}} }`)
   }
 
-
-
-
-
   obtenerSolicitudId(id: string | undefined): Observable<ModeloSolicitud>{
     return this.http.get<ModeloSolicitud>(`${this.url}/solicitudes/${id}`)
   }

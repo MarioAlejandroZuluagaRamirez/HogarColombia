@@ -43,6 +43,7 @@ const routes: Routes = [
   {path:'admin/ciudades', component: CiudadesComponent},
   {path:'admin/departamentos', component: DepartamentosComponent},
   {path:'admin/nuevo-depto', component: NuevoDeptoComponent},
+  {path:'admin/eliminar-asesor', component: NuevoDeptoComponent},
 
 
 

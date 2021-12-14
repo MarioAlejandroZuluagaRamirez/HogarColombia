@@ -9,6 +9,7 @@ import { NuevoDeptoComponent } from './nuevo-depto/nuevo-depto.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActualizarDptoComponent } from './actualizar-dpto/actualizar-dpto.component';
 import { NuevoAsesorComponent } from './nuevo-asesor/nuevo-asesor.component';
+import { EliminarAsesorComponent } from './eliminar-asesor/eliminar-asesor.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { NuevoAsesorComponent } from './nuevo-asesor/nuevo-asesor.component';
     NuevoDeptoComponent,
     ActualizarDptoComponent,
     NuevoAsesorComponent,
+    EliminarAsesorComponent,
   ],
   imports: [
     CommonModule,

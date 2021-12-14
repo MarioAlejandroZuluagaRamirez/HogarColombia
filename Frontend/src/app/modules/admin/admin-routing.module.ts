@@ -4,6 +4,7 @@ import { ActualizarDptoComponent } from './actualizar-dpto/actualizar-dpto.compo
 import { AsesoresComponent } from './asesores/asesores.component';
 import { CiudadesComponent } from './ciudades/ciudades.component';
 import { DepartamentosComponent } from './departamentos/departamentos.component';
+import { EliminarAsesorComponent } from './eliminar-asesor/eliminar-asesor.component';
 import { NuevoAsesorComponent } from './nuevo-asesor/nuevo-asesor.component';
 import { NuevoDeptoComponent } from './nuevo-depto/nuevo-depto.component';
 
@@ -32,6 +33,16 @@ const routes: Routes = [
     path: 'nuevo-depto',
     component: NuevoDeptoComponent 
   },
+  
+  {
+    path: 'eliminar-asesor/:id',
+    component: EliminarAsesorComponent
+  },
+  {
+    path: 'eliminar-asesor',
+    component: EliminarAsesorComponent
+  },
+  
 ];
 
 @NgModule({
