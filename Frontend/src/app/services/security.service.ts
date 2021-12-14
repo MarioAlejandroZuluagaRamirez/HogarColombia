@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { DateISOValidator } from 'ng2-validation';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
 import { ModeloEmail } from '../models/email.modelo';
 import { ModeloIdentificar } from '../models/identificar.modelo';
 import { ModeloUser } from '../models/user.modelo';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,10 +14,12 @@ export class SecurityService {
   url = 'http://[::1]:3000'
   datosUsuarioEnSesion = new BehaviorSubject<ModeloIdentificar>(new ModeloIdentificar())
   token: string = '';
+  rol: string = '';
   // Agregar al constructor private http: HttpClient
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient)  { 
     this.VerificarSesionActual();
     this.token = this.ObtenerToken();
+    this.rol = this.ObtenerRol();
   }
 
   Identificar(email: string, password: string): Observable<ModeloIdentificar> {
@@ -40,6 +43,29 @@ export class SecurityService {
     })
   }
 
+  BuscarPorEmail(email: string): Observable<ModeloUser> {
+    return this.http.get<ModeloUser>(`${this.url}/users/email?filter={"where":{"email":"${email}"}}`)
+  }
+
+  Recuperarme(): Observable<ModeloUser> {
+    this.token = this.ObtenerToken();
+    return this.http.get<ModeloUser>(`${this.url}/users/me`,{
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${this.token}`
+      })
+    })
+  }
+
+
+
+  CambiarClave(user: ModeloUser): Observable<ModeloUser>{
+    return this.http.patch<ModeloUser>(`${this.url}/user/${user.id}`,user,{
+      headers: new HttpHeaders({
+        // 'Authorization': `Bearer ${this.token}`
+      })
+    })
+  }
+
   AlmacenarSesion(datos: ModeloIdentificar){
     datos.identificado = true;
     let stringDatos = JSON.stringify(datos);
@@ -57,6 +83,16 @@ export class SecurityService {
     }
   }
 
+  ObtenerRol(){
+    let datosString = localStorage.getItem("datosSesion");
+    if (datosString){
+      let datos = JSON.parse(datosString);
+      return datos.rol;
+    }else{
+      return '';
+    }
+  }
+  
   ObtenerInformacionSesion(){
     let datosString = localStorage.getItem("datosSesion");
     if (datosString){

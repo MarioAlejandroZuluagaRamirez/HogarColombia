@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ContentComponent } from './template/content/content.component';
 import { ErrorComponent } from './template/error/error.component';
@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path: 'management',
     loadChildren: () => import("./modules/management/management.module").then(x => x.ManagementModule)
+  },
+  {
+    path: 'adviser',
+    loadChildren: () => import("./modules/adviser/adviser.module").then(x => x.AdviserModule)
   },
   {
     path: '**',
