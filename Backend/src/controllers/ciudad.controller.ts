@@ -1,3 +1,5 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   Count,
   CountSchema,
@@ -17,6 +19,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import { basicAuthorization } from '../middlewares/auth.midd';
 import {Ciudad} from '../models';
 import {CiudadRepository} from '../repositories';
 
@@ -47,6 +50,7 @@ export class CiudadController {
     return this.ciudadRepository.create(ciudad);
   }
 
+
   @get('/ciudades/count')
   @response(200, {
     description: 'Ciudad model count',
@@ -76,6 +80,7 @@ export class CiudadController {
     return this.ciudadRepository.find(filter);
   }
 
+
   @patch('/ciudades')
   @response(200, {
     description: 'Ciudad PATCH success count',
@@ -95,6 +100,7 @@ export class CiudadController {
     return this.ciudadRepository.updateAll(ciudad, where);
   }
 
+
   @get('/ciudades/{id}')
   @response(200, {
     description: 'Ciudad model instance',
@@ -110,6 +116,7 @@ export class CiudadController {
   ): Promise<Ciudad> {
     return this.ciudadRepository.findById(id, filter);
   }
+
 
   @patch('/ciudades/{id}')
   @response(204, {

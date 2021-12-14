@@ -1,3 +1,5 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   Count,
   CountSchema,
@@ -15,6 +17,7 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
+import { basicAuthorization } from '../middlewares/auth.midd';
 import {
   Departamento,
   Ciudad,
@@ -25,6 +28,7 @@ export class DepartamentoCiudadController {
   constructor(
     @repository(DepartamentoRepository) protected departamentoRepository: DepartamentoRepository,
   ) { }
+
 
   @get('/departamentos/{id}/ciudads', {
     responses: {
@@ -44,6 +48,7 @@ export class DepartamentoCiudadController {
   ): Promise<Ciudad[]> {
     return this.departamentoRepository.ciudades(id).find(filter);
   }
+
 
   @post('/departamentos/{id}/ciudads', {
     responses: {

@@ -62,7 +62,7 @@ export class TipoInmuebleController {
   })
   @authenticate('jwt')
   @authorize({
-    allowedRoles: ['Admin'],
+    allowedRoles: ['Admin, Client'],
     voters: [basicAuthorization],
   })
   async count(

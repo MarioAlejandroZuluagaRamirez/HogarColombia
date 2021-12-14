@@ -12,7 +12,6 @@ export class InmuebleRepository extends DefaultCrudRepository<
   typeof Inmueble.prototype.id,
   InmuebleRelations
 > {
-
   public readonly ciudad: BelongsToAccessor<Ciudad, typeof Inmueble.prototype.id>;
 
   public readonly tipoInmueble: BelongsToAccessor<TipoInmueble, typeof Inmueble.prototype.id>;

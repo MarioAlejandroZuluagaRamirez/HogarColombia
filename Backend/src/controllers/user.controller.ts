@@ -109,7 +109,6 @@ export class UserController {
     return {token};
 
   }
-
   @authenticate('jwt')
   @get('/whoAmI', {
     responses: {
@@ -214,10 +213,6 @@ export class UserController {
     },
   })
   @authenticate('jwt')
-  @authorize({
-    allowedRoles: ['Admin','User','Client'],
-    voters: [basicAuthorization],
-  })
   async printCurrentUser(
     @inject(SecurityBindings.USER)
     currentUserProfile: UserProfile,
@@ -228,7 +223,26 @@ export class UserController {
   }
 
   @authenticate.skip()
-  @get('/users/')
+  @get('/usersAll/')
+  @response(200, {
+    description: 'Array of Users model instances',
+    content: {
+      'application/json': {
+        schema: {
+          type: 'array',
+          items: getModelSchemaRef(User, {includeRelations: false}),
+        },
+      },
+    },
+  }) 
+  async findAll(
+    @param.filter(User) filter?: Filter<User>,
+  ): Promise<User[]> {
+      return this.userRepository.find(filter);
+  }
+
+
+@get('/users/')
   @response(200, {
     description: 'Array of Users model instances',
     content: {
@@ -250,6 +264,8 @@ export class UserController {
       return false;
     }
   }
+
+
 
   @authenticate.skip()
   @get('/users/email')
@@ -294,7 +310,7 @@ export class UserController {
 
       let destino = user.email;
       let asunto = "Cambio de Contraseña en Colombia MinTic";
-      let contenido = `Hola, cambibo de contraseña ha sido exitoso. Su nueva contraseña es ${user.password}.`;
+      let contenido = `Hola, el cambio de contraseña ha sido exitoso. Su nueva contraseña es ${user.password}.`;
 
       // Notificación al usuario, consumo del servicio de sypder (python)
       fetch(`${this.urlMensajeria}/envio-correo?correo_destino=${destino}&asunto=${asunto}&mensaje=${contenido}`)

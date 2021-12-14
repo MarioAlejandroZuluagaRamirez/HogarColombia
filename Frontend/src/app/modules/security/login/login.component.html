@@ -11,7 +11,7 @@
         <input formControlName="password" name="user[password]" type="password" placeholder="Ingrese su contraseña" required="required" class="input pass"/>
         <button [disabled]="!fgValidatorLogin.valid" type="submit" value="Ingresar" class="inputButton">Ingresar</button>
         <div class="text-center">
-          <a routerLink="/security/signup" id="">Crear una nueva cuenta</a> - <a href="#" id="">Recuperar Clave</a>
+          <a routerLink="/security/signup" id="">Crear una nueva cuenta</a> - <a routerLink="/security/password-recovery" id="">Recuperar Clave</a>
         </div>
       </form> 
     </div>

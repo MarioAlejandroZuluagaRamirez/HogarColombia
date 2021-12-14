@@ -1,3 +1,5 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   Count,
   CountSchema,
@@ -17,6 +19,7 @@ import {
   requestBody,
   response,
 } from '@loopback/rest';
+import { basicAuthorization } from '../middlewares/auth.midd';
 import {Departamento} from '../models';
 import {DepartamentoRepository} from '../repositories';
 
@@ -25,6 +28,7 @@ export class DepartamentoController {
     @repository(DepartamentoRepository)
     public departamentoRepository : DepartamentoRepository,
   ) {}
+
 
   @post('/departamentos')
   @response(200, {
@@ -46,6 +50,7 @@ export class DepartamentoController {
   ): Promise<Departamento> {
     return this.departamentoRepository.create(departamento);
   }
+
 
   @get('/departamentos/count')
   @response(200, {
@@ -76,6 +81,7 @@ export class DepartamentoController {
     return this.departamentoRepository.find(filter);
   }
 
+
   @patch('/departamentos')
   @response(200, {
     description: 'Departamento PATCH success count',
@@ -95,6 +101,7 @@ export class DepartamentoController {
     return this.departamentoRepository.updateAll(departamento, where);
   }
 
+
   @get('/departamentos/{id}')
   @response(200, {
     description: 'Departamento model instance',
@@ -110,6 +117,7 @@ export class DepartamentoController {
   ): Promise<Departamento> {
     return this.departamentoRepository.findById(id, filter);
   }
+
 
   @patch('/departamentos/{id}')
   @response(204, {

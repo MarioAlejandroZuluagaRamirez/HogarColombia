@@ -12,8 +12,8 @@ export class LoginComponent implements OnInit {
 
   // adicion de validadores
   fgValidatorLogin: FormGroup = this.fbLogin.group({
-    'email': ['',[Validators.required,Validators.email]],
-    'password': ['',[Validators.required]]
+    'email': ['', [Validators.required, Validators.email]],
+    'password': ['', [Validators.required]]
   });
   // adicion de FormBuilder al constructor: private fb: FormBuilder, private servicioSeguridad: SecurityService
   constructor(private fbLogin: FormBuilder,
@@ -24,17 +24,28 @@ export class LoginComponent implements OnInit {
   }
 
   // Agregar metodo para identificar usuario
-  LoginUsuario(){
+  LoginUsuario() {
     let email = this.fgValidatorLogin.controls['email'].value;
     let password = this.fgValidatorLogin.controls['password'].value;
-    this.servicioSeguridad.Identificar(email,password).subscribe((datos:any) => {
+    this.servicioSeguridad.Identificar(email, password).subscribe((datos: any) => {
       //Ok
       this.servicioSeguridad.AlmacenarSesion(datos)
       this.router.navigate(['content'])
-    },(err: any) => {
+      this.servicioSeguridad.Recuperarme().subscribe((roles: any) => {
+        
+        const datos1 = {'token':datos.token, 'identificado': datos.identificado, 'rol': roles.role}
+        this.servicioSeguridad.EliminarInformacionSesion();
+        this.servicioSeguridad.AlmacenarSesion(datos1)
+
+          //datosSesion[0].rol = roles.rol;
+        // Change value
+      }, (error: any) => {
+        alert('cualquier cosa')
+      })
+    }, (err: any) => {
       //KO
       alert("Nombre de usuario o contraseña incorrectos. Por favor válide nuevamente");
-    }) 
+    })
   }
 
 }

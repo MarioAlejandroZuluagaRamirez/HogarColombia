@@ -1,3 +1,5 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   Count,
   CountSchema,
@@ -15,6 +17,7 @@ import {
   post,
   requestBody,
 } from '@loopback/rest';
+import { basicAuthorization } from '../middlewares/auth.midd';
 import {
   Ciudad,
   Inmueble,
@@ -25,6 +28,7 @@ export class CiudadInmuebleController {
   constructor(
     @repository(CiudadRepository) protected ciudadRepository: CiudadRepository,
   ) { }
+  
 
   @get('/ciudads/{id}/inmuebles', {
     responses: {
@@ -44,6 +48,7 @@ export class CiudadInmuebleController {
   ): Promise<Inmueble[]> {
     return this.ciudadRepository.inmuebles(id).find(filter);
   }
+  
 
   @post('/ciudads/{id}/inmuebles', {
     responses: {

@@ -1,3 +1,5 @@
+import { authenticate } from '@loopback/authentication';
+import { authorize } from '@loopback/authorization';
 import {
   repository,
 } from '@loopback/repository';
@@ -6,6 +8,7 @@ import {
   get,
   getModelSchemaRef,
 } from '@loopback/rest';
+import { basicAuthorization } from '../middlewares/auth.midd';
 import {
   Ciudad,
   Departamento,
